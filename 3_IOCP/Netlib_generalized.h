@@ -105,7 +105,7 @@ private:
 	void SendProc(stSession* pSession, DWORD transferred);
 
 	// 동기화 객체 필요 없는 recv 1회가 보장되도록 작성
-	void RecvPost(stSession* pSession);
+	bool RecvPost(stSession* pSession);
 
 	// 함수 호출 전후로 세션에 대한 동기화 객체 필요함
 	bool SendPost(stSession* pSession);

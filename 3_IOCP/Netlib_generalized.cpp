@@ -553,7 +553,7 @@ void cServer_TCP::SendProc(stSession* pSession, DWORD transferred)
 	LeaveCriticalSection(&pSession->_cs_sessionLock);
 }
 
-void cServer_TCP::RecvPost(stSession* pSession)
+bool cServer_TCP::RecvPost(stSession* pSession)
 {
 	ZeroMemory(&pSession->_recvOverlapped, sizeof(OVERLAPPED));
 
@@ -573,7 +573,7 @@ void cServer_TCP::RecvPost(stSession* pSession)
 		int errCode = WSAGetLastError();
 		if (ERROR_IO_PENDING == errCode)
 		{
-			return;
+			return true;
 		}
 		else
 		{
@@ -588,8 +588,10 @@ void cServer_TCP::RecvPost(stSession* pSession)
 				//RemoveSession(pSession);
 				PostQueuedCompletionStatus(_hIOCP, 0, (ULONG_PTR)pSession, (LPOVERLAPPED)DELETE_SESSION_PROC);
 			}
+			return false;
 		}
 	}
+	return true;
 }
 bool cServer_TCP::SendPost(stSession* pSession)
 {

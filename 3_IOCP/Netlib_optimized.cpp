@@ -463,7 +463,6 @@ bool cServer_TCP::TryAcceptSession()
 
 	if (!OnConnectionRequest(clientAddr))
 	{
-		
 		delete pNewSession;
 		return true;
 	}
@@ -532,10 +531,7 @@ bool cServer_TCP::SendProc(stSession* pSession, DWORD transferred)
 
 	if (pSession->_sendBuffer.GetUsedSize() > 0)
 	{
-		if (!SendPost(pSession))
-		{
-			return false;
-		}
+		SendPost(pSession);
 	}
 
 	return true;
